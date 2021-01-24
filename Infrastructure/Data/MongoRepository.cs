@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Data
 {
-    class MongoRepository : IRepository<Guid>
+    public class MongoRepository : IRepository<Guid>
     {
         public Task<T> AddAsync<T>(T entity) where T : BaseEntity<Guid>, IAggregateRoot
         {
