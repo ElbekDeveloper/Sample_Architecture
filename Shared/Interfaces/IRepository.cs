@@ -1,15 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Shared.Interfaces
 {
-    public interface IRepository<TId>
+    /// <summary>
+    /// Declares the contract for CRUD operations
+    /// for entities
+    /// </summary>
+    /// <typeparam name="TId">Id depending the database type</typeparam>
+    public interface IRepository<TModel, TId> where TModel : IEntitiy<TId>
     {
-        Task<T> GetByIdAsync<T>(TId id) where T : BaseEntity<TId>, IAggregateRoot;
-        Task<List<T>> GetAll<T>() where T : BaseEntity<TId>, IAggregateRoot;
-        Task<T> AddAsync<T>(T entity) where T : BaseEntity<TId>, IAggregateRoot;
-        Task UpdateAsync<T>(T entity) where T : BaseEntity<TId>, IAggregateRoot;
-        Task DeleteAsync<T>(T entity) where T : BaseEntity<TId>, IAggregateRoot;
+        Task AddAsync(TModel obj, CancellationToken cancellationToken);
+        Task<IEnumerable<TModel>> GetAllAsync(CancellationToken cancellationToken);
+        Task<TModel> GetByIdAsync(TId id, CancellationToken cancellationToken);
+        Task UpdateAsync(TId id, TModel obj, CancellationToken cancellationToken);
+        Task RemoveAsync(TId id, CancellationToken cancellationToken);
     }
 }
